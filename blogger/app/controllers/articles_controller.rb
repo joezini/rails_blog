@@ -20,6 +20,7 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
+    @article.author_email = current_user.email
     @article.save
 
     flash.notice = "Article '#{@article.title}' Created!"
@@ -29,15 +30,24 @@ class ArticlesController < ApplicationController
 
   def destroy
     @article = Article.find(params[:id])
-    @article.destroy
 
-    flash.notice = "Article '#{@article.title}' Deleted!"
-
-    redirect_to articles_path
+    if user_is_author?
+      @article.destroy
+      flash.notice = "Article '#{@article.title}' Deleted!"
+      redirect_to articles_path
+    else
+      flash.notice = "Only the original author can delete the article"
+      redirect_to article_path(@article)
+    end
   end
 
   def edit
     @article = Article.find(params[:id])
+
+    if !user_is_author?
+      flash.notice = "Only the original author can edit the article"
+      redirect_to article_path(@article)
+    end
   end
 
   def update
@@ -47,5 +57,9 @@ class ArticlesController < ApplicationController
     flash.notice = "Article '#{@article.title}' Updated!"
 
     redirect_to article_path(@article)
+  end
+
+  def user_is_author?
+    @article.author_email == current_user.email
   end
 end
