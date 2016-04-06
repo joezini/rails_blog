@@ -1,0 +1,7 @@
+<h1>Articles By Month</h1>
+
+<ul id="articles">
+  <% for month in 1..12 do %>
+    <li><%= link_to Date::MONTHNAMES[month], month_path(month) %></li>
+  <% end %>
+</ul>

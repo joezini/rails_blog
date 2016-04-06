@@ -6,9 +6,11 @@ Rails.application.routes.draw do
   resources :tags
   resources :authors
   resources :author_sessions, only: [:new, :create, :destroy]
+  resources :months, only: [:index, :show]
 
   get 'login' => 'author_sessions#new'
   get 'logout' => 'author_sessions#destroy'
+  get 'most_popular' => 'articles#popular', as: :popular
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

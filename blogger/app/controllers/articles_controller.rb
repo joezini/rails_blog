@@ -9,6 +9,8 @@ class ArticlesController < ApplicationController
 
   def show
     @article = Article.find(params[:id])
+    @article.views = @article.views + 1
+    @article.save
 
     @comment = Comment.new
     @comment.article_id = @article.id
@@ -21,6 +23,7 @@ class ArticlesController < ApplicationController
   def create
     @article = Article.new(article_params)
     @article.author_email = current_user.email
+    @article.views = 0
     @article.save
 
     flash.notice = "Article '#{@article.title}' Created!"
@@ -57,6 +60,10 @@ class ArticlesController < ApplicationController
     flash.notice = "Article '#{@article.title}' Updated!"
 
     redirect_to article_path(@article)
+  end
+
+  def popular
+    @articles = Article.order(views: :desc).limit(3)
   end
 
   def user_is_author?

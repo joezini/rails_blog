@@ -5,6 +5,9 @@
     <%= link_to tag.name, tag_path(tag) %>
   <% end %>
 </p>
+<p>
+  Views: <%= @article.views %>
+</p>
 <% if @article.image.exists? %>
   <p><%= image_tag @article.image.url %></p>
 <% end %>
