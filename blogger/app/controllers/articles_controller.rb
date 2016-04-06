@@ -66,6 +66,13 @@ class ArticlesController < ApplicationController
     @articles = Article.order(views: :desc).limit(3)
   end
 
+  def feed
+    @articles = Article.all
+    respond_to do |format|
+      format.rss {render :layout => false}
+    end
+  end
+
   def user_is_author?
     @article.author_email == current_user.email
   end

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'login' => 'author_sessions#new'
   get 'logout' => 'author_sessions#destroy'
   get 'most_popular' => 'articles#popular', as: :popular
+  get 'feed' => 'articles#feed'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
